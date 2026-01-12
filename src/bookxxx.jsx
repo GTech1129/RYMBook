@@ -209,7 +209,7 @@ const BookLaunchHero = () => {
           <img 
             src={heroImage}
             alt="Book Cover"
-            className="rounded-lg"
+            //className="rounded-lg"
             style={{ 
               height: '200px',
               width: 'auto',
