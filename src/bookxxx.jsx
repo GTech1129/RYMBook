@@ -126,7 +126,7 @@ const BookLaunchHero = () => {
           backgroundPosition: 'center'
         }}
       >
-        {/* Overlay for uploaded background if needed */}
+        {/* Overlay for placeholder background if needed */}
         {!backgroundImage && (
           <div className="absolute inset-0 opacity-20" style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 400'%3E%3Cg fill='%23000000'%3E%3Crect x='50' y='150' width='80' height='250'/%3E%3Crect x='150' y='180' width='60' height='220'/%3E%3Crect x='230' y='120' width='90' height='280'/%3E%3Crect x='340' y='160' width='70' height='240'/%3E%3Crect x='430' y='100' width='100' height='300'/%3E%3Crect x='550' y='140' width='80' height='260'/%3E%3Crect x='650' y='110' width='85' height='290'/%3E%3Crect x='755' y='170' width='65' height='230'/%3E%3Crect x='840' y='130' width='95' height='270'/%3E%3Crect x='955' y='155' width='75' height='245'/%3E%3Crect x='1050' y='125' width='100' height='275'/%3E%3C/g%3E%3C/svg%3E")`,
@@ -135,24 +135,6 @@ const BookLaunchHero = () => {
             backgroundSize: 'cover'
           }}></div>
         )}
-
-        {/* Upload buttons when no images */}
-        <div className="absolute top-4 right-4 z-10 flex flex-col gap-2">
-          <label className="cursor-pointer">
-            <div className="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded-full transition-all duration-200 inline-flex items-center gap-2 shadow-xl text-xs">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              Background
-            </div>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleBackgroundUpload}
-              className="hidden"
-            />
-          </label>
-        </div>
       </div>
 
       {/* Book Cover - Positioned with bottom edge 12% above PROJECT UPLIFT */}
@@ -200,10 +182,12 @@ const BookLaunchHero = () => {
               height: '200px',
               width: 'auto',
               objectFit: 'contain',
-              filter: 'drop-shadow(8px 12px 20px rgba(0,0,0,0.5)) drop-shadow(4px 6px 10px rgba(0,0,0,0.3))',
-              WebkitFilter: 'drop-shadow(8px 12px 20px rgba(0,0,0,0.5)) drop-shadow(4px 6px 10px rgba(0,0,0,0.3))',
-              boxShadow: '8px 12px 24px rgba(0,0,0,0.4), 4px 6px 12px rgba(0,0,0,0.3)',
-              WebkitBoxShadow: '8px 12px 24px rgba(0,0,0,0.4), 4px 6px 12px rgba(0,0,0,0.3)'
+              transform: 'perspective(1000px) rotateY(-5deg)',
+              WebkitTransform: 'perspective(1000px) rotateY(-5deg)',
+              filter: 'drop-shadow(10px 15px 25px rgba(0,0,0,0.6)) drop-shadow(5px 8px 15px rgba(0,0,0,0.4))',
+              WebkitFilter: 'drop-shadow(10px 15px 25px rgba(0,0,0,0.6)) drop-shadow(5px 8px 15px rgba(0,0,0,0.4))',
+              boxShadow: '10px 15px 30px rgba(0,0,0,0.5), 5px 8px 15px rgba(0,0,0,0.3), inset -2px 0 8px rgba(0,0,0,0.2)',
+              WebkitBoxShadow: '10px 15px 30px rgba(0,0,0,0.5), 5px 8px 15px rgba(0,0,0,0.3), inset -2px 0 8px rgba(0,0,0,0.2)'
             }}
           />
         </div>
