@@ -6,7 +6,7 @@ const BookLaunchHero = () => {
     launchDate: '2026-02-01T00:00:00',
     bookTitle: 'RUMBLE, YOUNG MAN',
     bookSubtitle: 'A STORY OF FIGHTING FOR THE LEAST OF THESE',
-    audioUrl: 'https://www.dropbox.com/scl/fi/ljf5po4hbqv1kckxah4ol/Rumble-Young-Man-Audio-Sample.mp3?rlkey=idrdczi92f3crerdw4glc8ic5&st=9i6muv1d&dl=1' // Changed dl=0 to dl=1 for direct download
+    audioUrl: '/assets/audio-sample.mp3'
   };
 
   const [timeLeft, setTimeLeft] = useState({
@@ -16,9 +16,10 @@ const BookLaunchHero = () => {
     seconds: 0
   });
 
-  const [heroImage, setHeroImage] = useState('https://www.dropbox.com/scl/fi/cplswp3z91btrk9nr3nsv/resized.png?rlkey=i7waruupziflrkip9g45fiz9f&st=q76iq8sy&dl=1');
-  const [backgroundImage, setBackgroundImage] = useState('https://www.dropbox.com/scl/fi/yuf2g2ur4e4x9ly2umpq2/Cityscape-Background.png?rlkey=w04yhr9clkbz7i72ac4q47tv5&st=lree36fz&dl=1');
+  const [heroImage, setHeroImage] = useState('/assets/book-cover.png');
+  const [backgroundImage, setBackgroundImage] = useState('/assets/cityscape-bg.png');
   const [isBrave, setIsBrave] = useState(false);
+  const [showAudioModal, setShowAudioModal] = useState(false);
 
   useEffect(() => {
     // Detect Brave browser
@@ -73,11 +74,7 @@ const BookLaunchHero = () => {
   };
 
   const handleAudioClick = () => {
-    if (CONFIG.audioUrl) {
-      window.open(CONFIG.audioUrl, '_blank');
-    } else {
-      alert('Audio excerpt coming soon!');
-    }
+    setShowAudioModal(true);
   };
 
   const handleReadClick = () => {
@@ -303,6 +300,46 @@ const BookLaunchHero = () => {
           </p>
         </div>
       </div>
+
+      {/* Audio Modal */}
+      {showAudioModal && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
+          onClick={() => setShowAudioModal(false)}
+        >
+          <div 
+            className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-bold text-gray-800">Audio Sample</h3>
+              <button
+                onClick={() => setShowAudioModal(false)}
+                className="text-gray-500 hover:text-gray-700 text-2xl leading-none"
+              >
+                ×
+              </button>
+            </div>
+            <div className="mb-4">
+              <p className="text-sm text-gray-600 mb-4">Rumble, Young Man - Audio Excerpt</p>
+              <audio 
+                controls 
+                className="w-full"
+                autoPlay
+              >
+                <source src={CONFIG.audioUrl} type="audio/mpeg" />
+                Your browser does not support the audio element.
+              </audio>
+            </div>
+            <button
+              onClick={() => setShowAudioModal(false)}
+              className="w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 px-4 rounded-full transition-all duration-200"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
