@@ -16,8 +16,8 @@ const BookLaunchHero = () => {
     seconds: 0
   });
 
-  const [heroImage, setHeroImage] = useState('https://i.imgur.com/tDcLTaS.png');
-  const [backgroundImage, setBackgroundImage] = useState('https://i.imgur.com/jfjcET0.png');
+  const [heroImage, setHeroImage] = useState('https://www.dropbox.com/scl/fi/cplswp3z91btrk9nr3nsv/resized.png?rlkey=i7waruupziflrkip9g45fiz9f&st=q76iq8sy&dl=1');
+  const [backgroundImage, setBackgroundImage] = useState('https://www.dropbox.com/scl/fi/yuf2g2ur4e4x9ly2umpq2/Cityscape-Background.png?rlkey=w04yhr9clkbz7i72ac4q47tv5&st=lree36fz&dl=1');
   const [isBrave, setIsBrave] = useState(false);
 
   useEffect(() => {
@@ -174,7 +174,7 @@ const BookLaunchHero = () => {
         <div 
           className="absolute z-20"
           style={{
-            bottom: isBrave ? '456px' : 'calc(45% + 12%)',
+            bottom: isBrave ? '536px' : 'calc(45% + 22%)',
             right: '52%',
             transform: 'translateX(50%) rotate(20deg) translateY(5vh)',
             WebkitTransform: 'translateX(50%) rotate(20deg) translateY(5vh)',
@@ -209,15 +209,15 @@ const BookLaunchHero = () => {
           <img 
             src={heroImage}
             alt="Book Cover"
-            //className="rounded-lg"
+            className=""
             style={{ 
               height: '200px',
               width: 'auto',
               objectFit: 'contain',
-              filter: 'drop-shadow(20px 20px 30px rgba(0,0,0,0.5))',
-              WebkitFilter: 'drop-shadow(20px 20px 30px rgba(0,0,0,0.5))',
-              boxShadow: '0 25px 50px -12px rgba(0,0,0,0.6), inset -5px 0 10px rgba(0,0,0,0.3)',
-              WebkitBoxShadow: '0 25px 50px -12px rgba(0,0,0,0.6), inset -5px 0 10px rgba(0,0,0,0.3)'
+              filter: 'drop-shadow(8px 12px 20px rgba(0,0,0,0.5)) drop-shadow(4px 6px 10px rgba(0,0,0,0.3))',
+              WebkitFilter: 'drop-shadow(8px 12px 20px rgba(0,0,0,0.5)) drop-shadow(4px 6px 10px rgba(0,0,0,0.3))',
+              boxShadow: '8px 12px 24px rgba(0,0,0,0.4), 4px 6px 12px rgba(0,0,0,0.3)',
+              WebkitBoxShadow: '8px 12px 24px rgba(0,0,0,0.4), 4px 6px 12px rgba(0,0,0,0.3)'
             }}
           />
         </div>
@@ -294,7 +294,7 @@ const BookLaunchHero = () => {
             <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
               <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" />
             </svg>
-            PRESS HERE FOR AUDIO
+            PRESS HERE FOR AUDIO SAMPLE
           </button>
 
           {/* Book Title */}
