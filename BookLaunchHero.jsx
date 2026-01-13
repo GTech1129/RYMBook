@@ -328,7 +328,7 @@ const BookLaunchHero = () => {
                 scrolling="no" 
                 frameBorder="no" 
                 allow="autoplay" 
-                src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/g-tech-382204300/audio-sample-1&color=%23ff5500&auto_play=true&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"
+                src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2246814077&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"
                 title="SoundCloud Audio Player"
               />
             </div>
