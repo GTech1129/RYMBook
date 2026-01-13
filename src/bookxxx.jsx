@@ -308,7 +308,7 @@ const BookLaunchHero = () => {
           onClick={() => setShowAudioModal(false)}
         >
           <div 
-            className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl"
+            className="bg-white rounded-2xl p-6 max-w-lg w-full shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-center mb-4">
@@ -322,14 +322,15 @@ const BookLaunchHero = () => {
             </div>
             <div className="mb-4">
               <p className="text-sm text-gray-600 mb-4">Rumble, Young Man - Audio Excerpt</p>
-              <audio 
-                controls 
-                className="w-full"
-                autoPlay
-              >
-                <source src={CONFIG.audioUrl} type="audio/mpeg" />
-                Your browser does not support the audio element.
-              </audio>
+              <iframe 
+                width="100%" 
+                height="300" 
+                scrolling="no" 
+                frameBorder="no" 
+                allow="autoplay" 
+                src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2246764235&color=%23ff5500&auto_play=true&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"
+                title="SoundCloud Audio Player"
+              />
             </div>
             <button
               onClick={() => setShowAudioModal(false)}
