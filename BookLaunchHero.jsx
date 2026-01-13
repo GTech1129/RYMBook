@@ -6,7 +6,7 @@ const BookLaunchHero = () => {
     launchDate: '2026-02-01T00:00:00',
     bookTitle: 'RUMBLE, YOUNG MAN',
     bookSubtitle: 'A STORY OF FIGHTING FOR THE LEAST OF THESE',
-    audioUrl: 'https://www.dropbox.com/scl/fi/ljf5po4hbqv1kckxah4ol/Rumble-Young-Man-Audio-Sample.mp3?rlkey=idrdczi92f3crerdw4glc8ic5&st=9i6muv1d&dl=1' // Changed dl=0 to dl=1 for direct download
+    audioUrl: '/assets/audio-sample.mp3'
   };
 
   const [timeLeft, setTimeLeft] = useState({
@@ -16,9 +16,10 @@ const BookLaunchHero = () => {
     seconds: 0
   });
 
-  const [heroImage, setHeroImage] = useState('https://i.imgur.com/tDcLTaS.png');
-  const [backgroundImage, setBackgroundImage] = useState('https://i.imgur.com/jfjcET0.png');
+  const [heroImage, setHeroImage] = useState('/assets/book-cover.png');
+  const [backgroundImage, setBackgroundImage] = useState('/assets/cityscape-bg.png');
   const [isBrave, setIsBrave] = useState(false);
+  const [showAudioModal, setShowAudioModal] = useState(false);
 
   useEffect(() => {
     // Detect Brave browser
@@ -73,11 +74,7 @@ const BookLaunchHero = () => {
   };
 
   const handleAudioClick = () => {
-    if (CONFIG.audioUrl) {
-      window.open(CONFIG.audioUrl, '_blank');
-    } else {
-      alert('Audio excerpt coming soon!');
-    }
+    setShowAudioModal(true);
   };
 
   const handleReadClick = () => {
@@ -126,7 +123,7 @@ const BookLaunchHero = () => {
           backgroundPosition: 'center'
         }}
       >
-        {/* Overlay for uploaded background if needed */}
+        {/* Overlay for placeholder background if needed */}
         {!backgroundImage && (
           <div className="absolute inset-0 opacity-20" style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 400'%3E%3Cg fill='%23000000'%3E%3Crect x='50' y='150' width='80' height='250'/%3E%3Crect x='150' y='180' width='60' height='220'/%3E%3Crect x='230' y='120' width='90' height='280'/%3E%3Crect x='340' y='160' width='70' height='240'/%3E%3Crect x='430' y='100' width='100' height='300'/%3E%3Crect x='550' y='140' width='80' height='260'/%3E%3Crect x='650' y='110' width='85' height='290'/%3E%3Crect x='755' y='170' width='65' height='230'/%3E%3Crect x='840' y='130' width='95' height='270'/%3E%3Crect x='955' y='155' width='75' height='245'/%3E%3Crect x='1050' y='125' width='100' height='275'/%3E%3C/g%3E%3C/svg%3E")`,
@@ -135,38 +132,6 @@ const BookLaunchHero = () => {
             backgroundSize: 'cover'
           }}></div>
         )}
-
-        {/* Upload buttons when no images */}
-        <div className="absolute top-4 right-4 z-10 flex flex-col gap-2">
-          <label className="cursor-pointer">
-            <div className="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded-full transition-all duration-200 inline-flex items-center gap-2 shadow-xl text-xs">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              Background
-            </div>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleBackgroundUpload}
-              className="hidden"
-            />
-          </label>
-          <label className="cursor-pointer">
-            <div className="bg-red-700 hover:bg-red-800 text-white font-bold py-2 px-4 rounded-full transition-all duration-200 inline-flex items-center gap-2 shadow-xl text-xs">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              Book Cover
-            </div>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              className="hidden"
-            />
-          </label>
-        </div>
       </div>
 
       {/* Book Cover - Positioned with bottom edge 12% above PROJECT UPLIFT */}
@@ -174,7 +139,7 @@ const BookLaunchHero = () => {
         <div 
           className="absolute z-20"
           style={{
-            bottom: isBrave ? '456px' : 'calc(45% + 12%)',
+            bottom: isBrave ? '536px' : 'calc(45% + 22%)',
             right: '52%',
             transform: 'translateX(50%) rotate(20deg) translateY(5vh)',
             WebkitTransform: 'translateX(50%) rotate(20deg) translateY(5vh)',
@@ -209,15 +174,17 @@ const BookLaunchHero = () => {
           <img 
             src={heroImage}
             alt="Book Cover"
-            className="rounded-lg"
+            className=""
             style={{ 
               height: '200px',
               width: 'auto',
               objectFit: 'contain',
-              filter: 'drop-shadow(20px 20px 30px rgba(0,0,0,0.5))',
-              WebkitFilter: 'drop-shadow(20px 20px 30px rgba(0,0,0,0.5))',
-              boxShadow: '0 25px 50px -12px rgba(0,0,0,0.6), inset -5px 0 10px rgba(0,0,0,0.3)',
-              WebkitBoxShadow: '0 25px 50px -12px rgba(0,0,0,0.6), inset -5px 0 10px rgba(0,0,0,0.3)'
+              transform: 'perspective(1000px) rotateY(-5deg)',
+              WebkitTransform: 'perspective(1000px) rotateY(-5deg)',
+              filter: 'drop-shadow(10px 15px 25px rgba(0,0,0,0.6)) drop-shadow(5px 8px 15px rgba(0,0,0,0.4))',
+              WebkitFilter: 'drop-shadow(10px 15px 25px rgba(0,0,0,0.6)) drop-shadow(5px 8px 15px rgba(0,0,0,0.4))',
+              boxShadow: '10px 15px 30px rgba(0,0,0,0.5), 5px 8px 15px rgba(0,0,0,0.3), inset -2px 0 8px rgba(0,0,0,0.2)',
+              WebkitBoxShadow: '10px 15px 30px rgba(0,0,0,0.5), 5px 8px 15px rgba(0,0,0,0.3), inset -2px 0 8px rgba(0,0,0,0.2)'
             }}
           />
         </div>
@@ -294,7 +261,7 @@ const BookLaunchHero = () => {
             <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
               <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" />
             </svg>
-            PRESS HERE FOR AUDIO
+            PRESS HERE FOR AUDIO SAMPLE
           </button>
 
           {/* Book Title */}
@@ -333,6 +300,47 @@ const BookLaunchHero = () => {
           </p>
         </div>
       </div>
+
+      {/* Audio Modal */}
+      {showAudioModal && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
+          onClick={() => setShowAudioModal(false)}
+        >
+          <div 
+            className="bg-white rounded-2xl p-6 max-w-lg w-full shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-bold text-gray-800">Audio Sample</h3>
+              <button
+                onClick={() => setShowAudioModal(false)}
+                className="text-gray-500 hover:text-gray-700 text-2xl leading-none"
+              >
+                ×
+              </button>
+            </div>
+            <div className="mb-4">
+              <p className="text-sm text-gray-600 mb-4">Rumble, Young Man - Audio Excerpt</p>
+              <iframe 
+                width="100%" 
+                height="300" 
+                scrolling="no" 
+                frameBorder="no" 
+                allow="autoplay" 
+                src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/g-tech-382204300/audio-sample-1&color=%23ff5500&auto_play=true&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"
+                title="SoundCloud Audio Player"
+              />
+            </div>
+            <button
+              onClick={() => setShowAudioModal(false)}
+              className="w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 px-4 rounded-full transition-all duration-200"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
