@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 const BookLaunchHero = () => {
   // Configuration
   const CONFIG = {
-    launchDate: '2026-02-01T00:00:00',
+    launchDate: '2026-02-14T00:00:00',
     bookTitle: 'RUMBLE, YOUNG MAN',
     bookSubtitle: 'A STORY OF FIGHTING FOR THE LEAST OF THESE',
     audioUrl: '/assets/audio-sample.mp3'
