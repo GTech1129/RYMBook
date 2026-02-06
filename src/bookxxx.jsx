@@ -78,7 +78,7 @@ const BookLaunchHero = () => {
   };
 
   const handleReadClick = () => {
-    window.open('https://heyzine.com/flip-book/8d2ddb5dd8.html', '_blank');
+    window.open('https://heyzine.com/flip-book/f0402da946.html', '_blank');
   };
 
   const handlePreOrderClick = () => {
