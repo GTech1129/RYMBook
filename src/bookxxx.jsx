@@ -1,25 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
-const BookLaunchHero = () => {
-  // Configuration
-  const CONFIG = {
-    launchDate: '2026-02-14T00:00:00',
-    bookTitle: 'RUMBLE, YOUNG MAN',
-    bookSubtitle: 'A STORY OF FIGHTING FOR THE LEAST OF THESE',
-    audioUrl: '/assets/audio-sample.mp3'
-  };
-
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0
-  });
-
-  const [heroImage, setHeroImage] = useState('/assets/book-cover.png');
-  const [backgroundImage, setBackgroundImage] = useState('/assets/cityscape-bg.png');
-  const [isBrave, setIsBrave] = useState(false);
+const BookLaunchPage = () => {
   const [showAudioModal, setShowAudioModal] = useState(false);
+  const [heroImage] = useState('/assets/book-cover.png');
+  const [backgroundImage] = useState('/assets/cityscape-bg.png');
+  const [isBrave, setIsBrave] = useState(false);
 
   useEffect(() => {
     // Detect Brave browser
@@ -31,46 +16,8 @@ const BookLaunchHero = () => {
     detectBrave();
   }, []);
 
-  useEffect(() => {
-    const calculateTimeLeft = () => {
-      const difference = +new Date(CONFIG.launchDate) - +new Date();
-      
-      if (difference > 0) {
-        setTimeLeft({
-          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-          minutes: Math.floor((difference / 1000 / 60) % 60),
-          seconds: Math.floor((difference / 1000) % 60)
-        });
-      }
-    };
-
-    calculateTimeLeft();
-    const timer = setInterval(calculateTimeLeft, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setHeroImage(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleBackgroundUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setBackgroundImage(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
+  const scrollToAbout = () => {
+    document.getElementById('about-section')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const handleAudioClick = () => {
@@ -81,26 +28,49 @@ const BookLaunchHero = () => {
     window.open('https://heyzine.com/flip-book/f0402da946.html', '_blank');
   };
 
-  const handlePreOrderClick = () => {
+  const handleOrderClick = () => {
     window.open('https://payhip.com/b/HyAft', '_blank');
   };
 
   return (
-    <div className="relative w-full bg-gray-100 mx-auto" style={{ height: '100vh', minHeight: '100vh', maxHeight: '100vh', maxWidth: '100vw', width: '100vw', border: '8px solid #333', borderRadius: '40px', overflow: 'hidden', WebkitOverflowScrolling: 'touch', position: 'relative' }}>
+    <div>
       <style>
         {`
-          @supports (-webkit-touch-callout: none) {
-            .hero-section {
-              height: 55% !important;
-              max-height: 55% !important;
+          @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500;600&display=swap');
+          
+          h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+          }
+
+          @keyframes bookSpin {
+            0% {
+              transform: translateX(50%) rotateY(0deg) rotate(20deg) translateY(5vh);
+              -webkit-transform: translateX(50%) rotateY(0deg) rotate(20deg) translateY(5vh);
             }
-            .content-section {
-              height: 45% !important;
-              max-height: 45% !important;
+            100% {
+              transform: translateX(50%) rotateY(360deg) rotate(20deg) translateY(5vh);
+              -webkit-transform: translateX(50%) rotateY(360deg) rotate(20deg) translateY(5vh);
             }
           }
           
-          /* Specific fix for Brave browser */
+          @-webkit-keyframes bookSpin {
+            0% {
+              -webkit-transform: translateX(50%) rotateY(0deg) rotate(20deg) translateY(5vh);
+            }
+            100% {
+              -webkit-transform: translateX(50%) rotateY(360deg) rotate(20deg) translateY(5vh);
+            }
+          }
+
+          @supports (-webkit-touch-callout: none) {
+            .hero-section {
+              height: 55% !important;
+            }
+            .content-section {
+              height: 45% !important;
+            }
+          }
+          
           @media screen and (-webkit-min-device-pixel-ratio:0) {
             .hero-section {
               height: 440px !important;
@@ -111,231 +81,484 @@ const BookLaunchHero = () => {
           }
         `}
       </style>
-      
-      {/* Hero Section - 55% of screen with cityscape background */}
-      <div 
-        className="absolute top-0 left-0 w-full bg-gradient-to-b from-gray-700 to-gray-600 hero-section"
-        style={{ 
-          height: isBrave ? '440px' : '55%',
-          minHeight: isBrave ? '440px' : 'auto',
-          backgroundImage: backgroundImage ? `url(${backgroundImage})` : `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='%23000000' fill-opacity='0.1'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z'/%3E%3C/g%3E%3C/svg%3E")`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }}
-      >
-        {/* Overlay for placeholder background if needed */}
-        {!backgroundImage && (
-          <div className="absolute inset-0 opacity-20" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 400'%3E%3Cg fill='%23000000'%3E%3Crect x='50' y='150' width='80' height='250'/%3E%3Crect x='150' y='180' width='60' height='220'/%3E%3Crect x='230' y='120' width='90' height='280'/%3E%3Crect x='340' y='160' width='70' height='240'/%3E%3Crect x='430' y='100' width='100' height='300'/%3E%3Crect x='550' y='140' width='80' height='260'/%3E%3Crect x='650' y='110' width='85' height='290'/%3E%3Crect x='755' y='170' width='65' height='230'/%3E%3Crect x='840' y='130' width='95' height='270'/%3E%3Crect x='955' y='155' width='75' height='245'/%3E%3Crect x='1050' y='125' width='100' height='275'/%3E%3C/g%3E%3C/svg%3E")`,
-            backgroundPosition: 'bottom',
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover'
-          }}></div>
-        )}
-      </div>
 
-      {/* Book Cover - Positioned with bottom edge 12% above PROJECT UPLIFT */}
-      {heroImage && (
-        <div 
-          className="absolute z-20"
-          style={{
-            bottom: isBrave ? '536px' : 'calc(45% + 22%)',
-            right: '52%',
-            transform: 'translateX(50%) rotate(20deg) translateY(5vh)',
-            WebkitTransform: 'translateX(50%) rotate(20deg) translateY(5vh)',
-            animation: 'bookSpin 2s ease-out',
-            WebkitAnimation: 'bookSpin 2s ease-out',
-            transformStyle: 'preserve-3d',
-            WebkitTransformStyle: 'preserve-3d'
-          }}
-        >
-          <style>
-            {`
-              @keyframes bookSpin {
-                0% {
-                  transform: translateX(50%) rotateY(0deg) rotate(20deg) translateY(5vh);
-                  -webkit-transform: translateX(50%) rotateY(0deg) rotate(20deg) translateY(5vh);
-                }
-                100% {
-                  transform: translateX(50%) rotateY(360deg) rotate(20deg) translateY(5vh);
-                  -webkit-transform: translateX(50%) rotateY(360deg) rotate(20deg) translateY(5vh);
-                }
-              }
-              @-webkit-keyframes bookSpin {
-                0% {
-                  -webkit-transform: translateX(50%) rotateY(0deg) rotate(20deg) translateY(5vh);
-                }
-                100% {
-                  -webkit-transform: translateX(50%) rotateY(360deg) rotate(20deg) translateY(5vh);
-                }
-              }
-            `}
-          </style>
-          <img 
-            src={heroImage}
-            alt="Book Cover"
-            className=""
-            style={{ 
-              height: '200px',
-              width: 'auto',
-              objectFit: 'contain',
-              transform: 'perspective(1000px) rotateY(-5deg)',
-              WebkitTransform: 'perspective(1000px) rotateY(-5deg)',
-              filter: 'drop-shadow(10px 15px 25px rgba(0,0,0,0.6)) drop-shadow(5px 8px 15px rgba(0,0,0,0.4))',
-              WebkitFilter: 'drop-shadow(10px 15px 25px rgba(0,0,0,0.6)) drop-shadow(5px 8px 15px rgba(0,0,0,0.4))',
-              boxShadow: '10px 15px 30px rgba(0,0,0,0.5), 5px 8px 15px rgba(0,0,0,0.3), inset -2px 0 8px rgba(0,0,0,0.2)',
-              WebkitBoxShadow: '10px 15px 30px rgba(0,0,0,0.5), 5px 8px 15px rgba(0,0,0,0.3), inset -2px 0 8px rgba(0,0,0,0.2)'
-            }}
-          />
-        </div>
-      )}
-
-      {/* Content Section - 45% of screen */}
-      <div 
-        className="absolute bottom-0 left-0 w-full bg-white content-section"
-        style={{ height: isBrave ? '360px' : '45%', minHeight: isBrave ? '360px' : 'auto' }}
-      >
-        {/* Project UPLIFT Header - Positioned above content section */}
-        <div className="absolute left-0 w-full bg-white py-2 px-6 shadow-md z-40" style={{ top: '-4vh' }}>
-          <p className="text-gray-900 font-semibold text-center uppercase tracking-wide">
-            <span className="font-extrabold text-base sm:text-lg text-red-700">PROJECT UPLIFT</span>
-            <br />
-            <span className="text-xs text-gray-600">by CESI Community Partners</span>
-          </p>
-        </div>
+      {/* HERO SECTION WITH PHONE FRAME */}
+      <div className="relative w-full bg-gray-100 mx-auto" style={{ 
+        height: '100vh', 
+        minHeight: '100vh', 
+        maxHeight: '100vh', 
+        maxWidth: '100vw', 
+        width: '100vw', 
+        border: '8px solid #333', 
+        borderRadius: '40px', 
+        overflow: 'hidden', 
+        WebkitOverflowScrolling: 'touch', 
+        position: 'relative' 
+      }}>
         
-        <div className="h-full flex flex-col justify-center px-6 py-4 text-center overflow-y-auto" style={{ paddingTop: '3rem' }}>
-          {/* Countdown Timer */}
-          <div className="mb-3 bg-gradient-to-br from-red-50 to-red-100 rounded-2xl p-3 shadow-lg border-2 border-red-300 flex-shrink-0">
-            <h3 className="text-xs sm:text-sm font-bold uppercase tracking-widest text-red-700 mb-2">
-              🚀 Launch Countdown
-            </h3>
-            <div className="flex justify-center gap-2 sm:gap-3">
-              {[
-                { label: 'DAYS', value: timeLeft.days },
-                { label: 'HOURS', value: timeLeft.hours },
-                { label: 'MINS', value: timeLeft.minutes },
-                { label: 'SECS', value: timeLeft.seconds }
-              ].map((item, idx) => (
-                <div key={idx} className="flex flex-col items-center">
-                  <div className="text-2xl sm:text-3xl font-bold text-red-700">
-                    {String(item.value).padStart(2, '0')}
-                  </div>
-                  <div className="text-xs uppercase tracking-wider text-red-600 mt-1">
-                    {item.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+        {/* Hero Section - 55% of screen with cityscape background */}
+        <div 
+          className="absolute top-0 left-0 w-full bg-gradient-to-b from-gray-700 to-gray-600 hero-section"
+          style={{ 
+            height: isBrave ? '440px' : '55%',
+            minHeight: isBrave ? '440px' : 'auto',
+            backgroundImage: backgroundImage ? `url(${backgroundImage})` : '',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center'
+          }}
+        />
 
-          {/* Primary Button */}
-          <style>
-            {`
-              @keyframes subtle-glow {
-                0%, 100% {
-                  box-shadow: 0 4px 15px rgba(185, 28, 28, 0.4);
-                }
-                50% {
-                  box-shadow: 0 4px 25px rgba(185, 28, 28, 0.6);
-                }
-              }
-              @-webkit-keyframes subtle-glow {
-                0%, 100% {
-                  box-shadow: 0 4px 15px rgba(185, 28, 28, 0.4);
-                }
-                50% {
-                  box-shadow: 0 4px 25px rgba(185, 28, 28, 0.6);
-                }
-              }
-            `}
-          </style>
-          <button
-            onClick={handleAudioClick}
-            className="w-full max-w-xs bg-red-700 hover:bg-red-800 text-white font-bold py-2.5 px-4 rounded-full mb-2 transition-all duration-200 flex items-center justify-center gap-2 mx-auto text-xs sm:text-sm flex-shrink-0"
+        {/* Book Cover - Positioned with original styling */}
+        {heroImage && (
+          <div 
+            className="absolute z-20"
             style={{
-              animation: 'subtle-glow 2s ease-in-out infinite',
-              WebkitAnimation: 'subtle-glow 2s ease-in-out infinite'
+              bottom: isBrave ? '536px' : 'calc(45% + 22%)',
+              right: '52%',
+              transform: 'translateX(50%) rotate(20deg) translateY(5vh)',
+              WebkitTransform: 'translateX(50%) rotate(20deg) translateY(5vh)',
+              animation: 'bookSpin 2s ease-out',
+              WebkitAnimation: 'bookSpin 2s ease-out',
+              transformStyle: 'preserve-3d',
+              WebkitTransformStyle: 'preserve-3d'
             }}
           >
-            <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" />
-            </svg>
-            PRESS HERE FOR AUDIO SAMPLE
-          </button>
+            <img 
+              src={heroImage}
+              alt="Book Cover"
+              style={{ 
+                height: '200px',
+                width: 'auto',
+                objectFit: 'contain',
+                transform: 'perspective(1000px) rotateY(-5deg)',
+                WebkitTransform: 'perspective(1000px) rotateY(-5deg)',
+                filter: 'drop-shadow(10px 15px 25px rgba(0,0,0,0.6)) drop-shadow(5px 8px 15px rgba(0,0,0,0.4))',
+                WebkitFilter: 'drop-shadow(10px 15px 25px rgba(0,0,0,0.6)) drop-shadow(5px 8px 15px rgba(0,0,0,0.4))',
+                boxShadow: '10px 15px 30px rgba(0,0,0,0.5), 5px 8px 15px rgba(0,0,0,0.3), inset -2px 0 8px rgba(0,0,0,0.2)',
+                WebkitBoxShadow: '10px 15px 30px rgba(0,0,0,0.5), 5px 8px 15px rgba(0,0,0,0.3), inset -2px 0 8px rgba(0,0,0,0.2)'
+              }}
+            />
+          </div>
+        )}
 
-          {/* Book Title */}
-          <div className="my-2 flex-shrink-0">
-            <h1 className="text-sm sm:text-base font-bold uppercase tracking-tight text-gray-800">
-              {CONFIG.bookTitle}
-            </h1>
-            <p className="text-xs uppercase tracking-wide text-gray-600 mt-1">
-              {CONFIG.bookSubtitle}
+        {/* Content Section - 45% of screen */}
+        <div 
+          className="absolute bottom-0 left-0 w-full bg-white content-section"
+          style={{ height: isBrave ? '360px' : '45%', minHeight: isBrave ? '360px' : 'auto' }}
+        >
+          {/* Project UPLIFT Header - Positioned above content section */}
+          <div className="absolute left-0 w-full bg-white py-2 px-6 shadow-md z-40" style={{ top: '-4vh' }}>
+            <p className="text-gray-900 font-semibold text-center uppercase tracking-wide">
+              <span className="font-extrabold text-base sm:text-lg text-red-700">PROJECT UPLIFT</span>
+              <br />
+              <span className="text-xs text-gray-600">by CESI Community Partners</span>
             </p>
           </div>
+          
+          <div className="h-full flex flex-col justify-center px-6 py-4 text-center overflow-y-auto" style={{ paddingTop: '3rem' }}>
+            {/* Book Title */}
+            <div className="mb-3 flex-shrink-0">
+              <h1 className="text-lg sm:text-xl font-bold uppercase tracking-tight text-gray-800">
+                RUMBLE, YOUNG MAN
+              </h1>
+              <p className="text-xs uppercase tracking-wide text-gray-600 mt-1">
+                A STORY OF FIGHTING FOR THE LEAST OF THESE
+              </p>
+            </div>
 
-          {/* Secondary Buttons */}
-          <div className="flex gap-2 justify-center px-2 flex-shrink-0 flex-wrap">
+            {/* Primary Button */}
+            <style>
+              {`
+                @keyframes subtle-glow {
+                  0%, 100% {
+                    box-shadow: 0 4px 15px rgba(185, 28, 28, 0.4);
+                  }
+                  50% {
+                    box-shadow: 0 4px 25px rgba(185, 28, 28, 0.6);
+                  }
+                }
+                @-webkit-keyframes subtle-glow {
+                  0%, 100% {
+                    box-shadow: 0 4px 15px rgba(185, 28, 28, 0.4);
+                  }
+                  50% {
+                    box-shadow: 0 4px 25px rgba(185, 28, 28, 0.6);
+                  }
+                }
+              `}
+            </style>
             <button
-              onClick={handleReadClick}
-              className="bg-white border-2 border-red-700 text-red-700 hover:bg-red-50 font-bold py-2 px-3 sm:px-4 rounded-full transition-all duration-200 text-xs sm:text-sm"
-            >
-              READ SAMPLE
-            </button>
-            <button
-              onClick={handlePreOrderClick}
-              className="bg-red-700 hover:bg-red-800 text-white font-bold py-2 px-3 sm:px-4 rounded-full transition-all duration-200 text-xs sm:text-sm"
+              onClick={handleAudioClick}
+              className="w-full max-w-xs bg-red-700 hover:bg-red-800 text-white font-bold py-2.5 px-4 rounded-full mb-2 transition-all duration-200 flex items-center justify-center gap-2 mx-auto text-xs sm:text-sm flex-shrink-0"
               style={{
                 animation: 'subtle-glow 2s ease-in-out infinite',
                 WebkitAnimation: 'subtle-glow 2s ease-in-out infinite'
               }}
             >
-              PRE-ORDER BOOK
+              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" />
+              </svg>
+              LISTEN TO AUDIO
+            </button>
+
+            {/* Secondary Buttons */}
+            <div className="flex gap-2 justify-center px-2 flex-shrink-0 flex-wrap mb-3">
+              <button
+                onClick={handleReadClick}
+                className="bg-white border-2 border-red-700 text-red-700 hover:bg-red-50 font-bold py-2 px-3 sm:px-4 rounded-full transition-all duration-200 text-xs sm:text-sm"
+              >
+                READ SAMPLE
+              </button>
+              <button
+                onClick={handleOrderClick}
+                className="bg-red-700 hover:bg-red-800 text-white font-bold py-2 px-3 sm:px-4 rounded-full transition-all duration-200 text-xs sm:text-sm"
+                style={{
+                  animation: 'subtle-glow 2s ease-in-out infinite',
+                  WebkitAnimation: 'subtle-glow 2s ease-in-out infinite'
+                }}
+              >
+                ORDER BOOK
+              </button>
+            </div>
+
+            {/* Learn More Button */}
+            <button
+              onClick={scrollToAbout}
+              className="text-gray-600 hover:text-red-700 text-xs font-semibold uppercase tracking-wider flex flex-col items-center gap-1 mx-auto transition-all duration-200 flex-shrink-0"
+              style={{ marginTop: '8px' }}
+            >
+              LEARN MORE
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+
+            {/* Footer Text */}
+            <p className="text-xs uppercase tracking-widest text-gray-400 mt-3 flex-shrink-0">
+              © 2026 Rumble Young Man Project
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* ABOUT SECTIONS */}
+      <div id="about-section" style={{
+        backgroundColor: '#F5F5F3',
+        color: '#1F1F1F',
+        fontFamily: 'Inter, sans-serif'
+      }}>
+        {/* THE BOOK */}
+        <section style={{
+          maxWidth: '800px',
+          margin: '0 auto',
+          padding: '120px 40px'
+        }}>
+          <h2 style={{
+            fontSize: '14px',
+            letterSpacing: '2px',
+            marginBottom: '24px',
+            fontFamily: 'Inter',
+            fontWeight: 600
+          }}>
+            THE BOOK
+          </h2>
+          <h3 style={{
+            fontSize: 'clamp(28px, 5vw, 36px)',
+            marginBottom: '32px',
+            lineHeight: 1.3
+          }}>
+            What this book is
+          </h3>
+          <p style={{ fontSize: '18px', marginBottom: '24px', lineHeight: 1.8 }}>
+            Rumble, Young Man is not fiction. It is not theory. It is testimony.
+          </p>
+          <p style={{ fontSize: '18px', marginBottom: '24px', lineHeight: 1.8 }}>
+            Written from inside cycles of incarceration, displacement, and legal conflict, this book preserves moments often erased — voices rarely archived, stories rarely believed.
+          </p>
+          <p style={{ fontSize: '18px', lineHeight: 1.8 }}>
+            This is a record.
+          </p>
+        </section>
+
+        <div style={{ borderTop: '1px solid rgba(31, 31, 31, 0.15)', maxWidth: '1200px', margin: '0 auto' }} />
+
+        {/* THE STORY */}
+        <section style={{
+          maxWidth: '800px',
+          margin: '0 auto',
+          padding: '120px 40px'
+        }}>
+          <h2 style={{
+            fontSize: '14px',
+            letterSpacing: '2px',
+            marginBottom: '24px',
+            fontFamily: 'Inter',
+            fontWeight: 600
+          }}>
+            THE STORY
+          </h2>
+          <h3 style={{
+            fontSize: 'clamp(28px, 5vw, 36px)',
+            marginBottom: '32px',
+            lineHeight: 1.3
+          }}>
+            Where it begins
+          </h3>
+          <p style={{ fontSize: '18px', marginBottom: '24px', lineHeight: 1.8 }}>
+            The story follows a young man navigating systems that criminalize poverty, fracture families, and redefine freedom.
+          </p>
+          <p style={{ fontSize: '18px', marginBottom: '24px', lineHeight: 1.8 }}>
+            It is told without apology. Without exaggeration. Without permission.
+          </p>
+          <p style={{ fontSize: '18px', lineHeight: 1.8 }}>
+            What survives here is memory — and the refusal to disappear.
+          </p>
+        </section>
+
+        <div style={{ borderTop: '1px solid rgba(31, 31, 31, 0.15)', maxWidth: '1200px', margin: '0 auto' }} />
+
+        {/* THE SYSTEM */}
+        <section style={{
+          maxWidth: '800px',
+          margin: '0 auto',
+          padding: '120px 40px'
+        }}>
+          <h2 style={{
+            fontSize: '14px',
+            letterSpacing: '2px',
+            marginBottom: '24px',
+            fontFamily: 'Inter',
+            fontWeight: 600
+          }}>
+            THE SYSTEM
+          </h2>
+          <h3 style={{
+            fontSize: 'clamp(28px, 5vw, 36px)',
+            marginBottom: '32px',
+            lineHeight: 1.3
+          }}>
+            Why this story matters
+          </h3>
+          <p style={{ fontSize: '18px', marginBottom: '24px', lineHeight: 1.8 }}>
+            Millions move through institutions that leave no public trace of their inner lives. What happens inside those spaces is often reduced to numbers, charges, or headlines.
+          </p>
+          <p style={{ fontSize: '18px', marginBottom: '24px', lineHeight: 1.8 }}>
+            This project exists to counter that silence.
+          </p>
+          <p style={{ fontSize: '18px', lineHeight: 1.8 }}>
+            Not to explain the system — but to reveal its human cost.
+          </p>
+        </section>
+
+        <div style={{ borderTop: '1px solid rgba(31, 31, 31, 0.15)', maxWidth: '1200px', margin: '0 auto' }} />
+
+        {/* THE PROJECT */}
+        <section style={{
+          maxWidth: '800px',
+          margin: '0 auto',
+          padding: '120px 40px'
+        }}>
+          <h2 style={{
+            fontSize: '14px',
+            letterSpacing: '2px',
+            marginBottom: '24px',
+            fontFamily: 'Inter',
+            fontWeight: 600
+          }}>
+            THE PROJECT
+          </h2>
+          <h3 style={{
+            fontSize: 'clamp(28px, 5vw, 36px)',
+            marginBottom: '32px',
+            lineHeight: 1.3
+          }}>
+            More than a book
+          </h3>
+          <p style={{ fontSize: '18px', marginBottom: '24px', lineHeight: 1.8 }}>
+            Rumble, Young Man is part of Project Uplift, an initiative dedicated to preserving truth, amplifying unheard narratives, and creating space for testimony.
+          </p>
+          <p style={{ fontSize: '18px', lineHeight: 1.8 }}>
+            This work stands as both documentation and resistance.
+          </p>
+        </section>
+
+        <div style={{ borderTop: '1px solid rgba(31, 31, 31, 0.15)', maxWidth: '1200px', margin: '0 auto' }} />
+
+        {/* ENGAGE */}
+        <section style={{
+          maxWidth: '800px',
+          margin: '0 auto',
+          padding: '120px 40px',
+          textAlign: 'center'
+        }}>
+          <h2 style={{
+            fontSize: '14px',
+            letterSpacing: '2px',
+            marginBottom: '24px',
+            fontFamily: 'Inter',
+            fontWeight: 600
+          }}>
+            ENGAGE
+          </h2>
+          <h3 style={{
+            fontSize: 'clamp(28px, 5vw, 36px)',
+            marginBottom: '32px',
+            lineHeight: 1.3
+          }}>
+            How to support or engage
+          </h3>
+          <ul style={{
+            listStyle: 'none',
+            padding: 0,
+            fontSize: '18px',
+            marginBottom: '48px',
+            lineHeight: 2.2
+          }}>
+            <li>Read the book</li>
+            <li>Listen to the audio</li>
+            <li>Share the story</li>
+            <li>Support the project</li>
+          </ul>
+          <p style={{ fontSize: '16px', marginBottom: '40px', fontStyle: 'italic' }}>
+            Every action sustains visibility.
+          </p>
+          
+          <div style={{
+            display: 'flex',
+            gap: '20px',
+            justifyContent: 'center',
+            flexWrap: 'wrap'
+          }}>
+            <button
+              onClick={handleOrderClick}
+              style={{
+                backgroundColor: '#B11217',
+                color: '#F5F5F3',
+                border: 'none',
+                padding: '16px 40px',
+                fontSize: '16px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                letterSpacing: '0.5px',
+                fontFamily: 'Inter'
+              }}
+            >
+              ORDER THE BOOK
+            </button>
+            <button
+              onClick={handleAudioClick}
+              style={{
+                backgroundColor: 'transparent',
+                color: '#1F1F1F',
+                border: '2px solid #1F1F1F',
+                padding: '16px 40px',
+                fontSize: '16px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                letterSpacing: '0.5px',
+                fontFamily: 'Inter'
+              }}
+            >
+              LISTEN TO AUDIO
             </button>
           </div>
+        </section>
 
-          {/* Footer Text */}
-          <p className="text-xs uppercase tracking-widest text-gray-400 mt-3 flex-shrink-0">
-            © 2024 Rumble Young Man Project
+        {/* FOOTER */}
+        <footer style={{
+          borderTop: '1px solid rgba(31, 31, 31, 0.15)',
+          padding: '60px 40px',
+          textAlign: 'center'
+        }}>
+          <p style={{
+            fontSize: '12px',
+            letterSpacing: '1px',
+            margin: 0
+          }}>
+            © 2026 RUMBLE YOUNG MAN PROJECT<br/>
+            A Project Uplift Initiative
           </p>
-        </div>
+        </footer>
       </div>
 
       {/* Audio Modal */}
       {showAudioModal && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.75)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            padding: '16px'
+          }}
           onClick={() => setShowAudioModal(false)}
         >
           <div 
-            className="bg-white rounded-2xl p-6 max-w-lg w-full shadow-2xl"
+            style={{
+              backgroundColor: 'white',
+              borderRadius: '16px',
+              padding: '24px',
+              maxWidth: '600px',
+              width: '100%',
+              boxShadow: '0 20px 50px rgba(0,0,0,0.3)'
+            }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-bold text-gray-800">Audio Sample</h3>
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: '16px'
+            }}>
+              <h3 style={{ fontSize: '20px', fontWeight: 'bold', margin: 0 }}>
+                Audio Sample
+              </h3>
               <button
                 onClick={() => setShowAudioModal(false)}
-                className="text-gray-500 hover:text-gray-700 text-2xl leading-none"
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  fontSize: '28px',
+                  color: '#666',
+                  cursor: 'pointer',
+                  padding: 0
+                }}
               >
                 ×
               </button>
             </div>
-            <div className="mb-4">
-              <p className="text-sm text-gray-600 mb-4">Rumble, Young Man - Audio Excerpt</p>
+            <div style={{ marginBottom: '16px' }}>
+              <p style={{ fontSize: '14px', color: '#666', marginBottom: '16px' }}>
+                Rumble, Young Man - Audio Excerpt
+              </p>
               <iframe 
                 width="100%" 
                 height="300" 
                 scrolling="no" 
                 frameBorder="no" 
                 allow="autoplay" 
-        //      src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%3Atracks%3A2248244786%3Fsecret_token%3Ds-YYKM3AYuZsD&color=%2300aabb&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"
-                src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2261142128&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"
+                src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2262219530&color=%23121111&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"
                 title="SoundCloud Audio Player"
               />
             </div>
             <button
               onClick={() => setShowAudioModal(false)}
-              className="w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 px-4 rounded-full transition-all duration-200"
+              style={{
+                width: '100%',
+                backgroundColor: '#B11217',
+                color: '#F5F5F3',
+                border: 'none',
+                padding: '12px',
+                fontSize: '16px',
+                fontWeight: 'bold',
+                cursor: 'pointer'
+              }}
             >
               Close
             </button>
@@ -346,4 +569,5 @@ const BookLaunchHero = () => {
   );
 };
 
-export default BookLaunchHero;
+export default BookLaunchPage;
+  
