@@ -5,6 +5,7 @@ const BookLaunchPage = () => {
   const [heroImage] = useState('/assets/book-cover.png');
   const [backgroundImage] = useState('/assets/cityscape-bg.png');
   const [isBrave, setIsBrave] = useState(false);
+  const [sessionStart] = useState(Date.now());
 
   useEffect(() => {
     // Detect Brave browser
@@ -14,21 +15,82 @@ const BookLaunchPage = () => {
       }
     };
     detectBrave();
-  }, []);
+
+    // Track session start
+    if (window.gtag) {
+      window.gtag('event', 'session_start', {
+        'event_category': 'engagement'
+      });
+    }
+
+    // Track time spent on page
+    const trackTimeSpent = () => {
+      const timeSpent = Math.round((Date.now() - sessionStart) / 1000); // in seconds
+      if (window.gtag) {
+        window.gtag('event', 'time_on_site', {
+          'event_category': 'engagement',
+          'event_label': 'session_duration',
+          'value': timeSpent
+        });
+      }
+    };
+
+    // Track when user leaves
+    window.addEventListener('beforeunload', trackTimeSpent);
+    
+    // Track every 30 seconds
+    const interval = setInterval(() => {
+      trackTimeSpent();
+    }, 30000);
+
+    return () => {
+      window.removeEventListener('beforeunload', trackTimeSpent);
+      clearInterval(interval);
+      trackTimeSpent();
+    };
+  }, [sessionStart]);
 
   const scrollToAbout = () => {
+    // Track Learn More click
+    if (window.gtag) {
+      window.gtag('event', 'click', {
+        'event_category': 'navigation',
+        'event_label': 'learn_more_clicked'
+      });
+    }
     document.getElementById('about-section')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const handleAudioClick = () => {
+    // Track Audio button click
+    if (window.gtag) {
+      window.gtag('event', 'click', {
+        'event_category': 'engagement',
+        'event_label': 'listen_to_audio_clicked'
+      });
+    }
     setShowAudioModal(true);
   };
 
   const handleReadClick = () => {
+    // Track Read Sample button click
+    if (window.gtag) {
+      window.gtag('event', 'click', {
+        'event_category': 'engagement',
+        'event_label': 'read_sample_clicked'
+      });
+    }
     window.open('https://heyzine.com/flip-book/f0402da946.html', '_blank');
   };
 
   const handleOrderClick = () => {
+    // Track Order Book button click
+    if (window.gtag) {
+      window.gtag('event', 'purchase_intent', {
+        'event_category': 'conversion',
+        'event_label': 'order_book_clicked'
+      });
+    }
     window.open('https://payhip.com/b/HyAft', '_blank');
   };
 
@@ -570,4 +632,3 @@ const BookLaunchPage = () => {
 };
 
 export default BookLaunchPage;
-  
