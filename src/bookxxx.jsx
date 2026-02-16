@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from 'react';
 
+// ✅ Analytics helper (outside the component)
+const sendEvent = (eventName, params = {}) => {
+  if (typeof window !== "undefined") {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: eventName,
+      ...params
+    });
+  }
+};
+
 const BookLaunchPage = () => {
   const [showAudioModal, setShowAudioModal] = useState(false);
   const [heroImage] = useState('/assets/book-cover.png');
@@ -16,28 +27,25 @@ const BookLaunchPage = () => {
     };
     detectBrave();
 
-    // Track session start
-    if (window.gtag) {
-      window.gtag('event', 'session_start', {
-        'event_category': 'engagement'
-      });
-    }
+    // ✅ Track session start
+    sendEvent('session_start', {
+      event_category: 'engagement'
+    });
 
-    // Track time spent on page
+    // ✅ Track time spent on page
     const trackTimeSpent = () => {
-      const timeSpent = Math.round((Date.now() - sessionStart) / 1000); // in seconds
-      if (window.gtag) {
-        window.gtag('event', 'time_on_site', {
-          'event_category': 'engagement',
-          'event_label': 'session_duration',
-          'value': timeSpent
-        });
-      }
+      const timeSpent = Math.round((Date.now() - sessionStart) / 1000);
+
+      sendEvent('time_on_site', {
+        event_category: 'engagement',
+        event_label: 'session_duration',
+        value: timeSpent
+      });
     };
 
     // Track when user leaves
     window.addEventListener('beforeunload', trackTimeSpent);
-    
+
     // Track every 30 seconds
     const interval = setInterval(() => {
       trackTimeSpent();
@@ -50,49 +58,46 @@ const BookLaunchPage = () => {
     };
   }, [sessionStart]);
 
+  // 🔽 Scroll
   const scrollToAbout = () => {
-    // Track Learn More click
-    if (window.gtag) {
-      window.gtag('event', 'click', {
-        'event_category': 'navigation',
-        'event_label': 'learn_more_clicked'
-      });
-    }
+    sendEvent('click', {
+      event_category: 'navigation',
+      event_label: 'learn_more_clicked'
+    });
+
     document.getElementById('about-section')?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  // 🔊 Audio
   const handleAudioClick = () => {
-    // Track Audio button click
-    if (window.gtag) {
-      window.gtag('event', 'click', {
-        'event_category': 'engagement',
-        'event_label': 'listen_to_audio_clicked'
-      });
-    }
+    sendEvent('click', {
+      event_category: 'engagement',
+      event_label: 'listen_to_audio_clicked'
+    });
+
     setShowAudioModal(true);
   };
 
+  // 📖 Read
   const handleReadClick = () => {
-    // Track Read Sample button click
-    if (window.gtag) {
-      window.gtag('event', 'click', {
-        'event_category': 'engagement',
-        'event_label': 'read_sample_clicked'
-      });
-    }
+    sendEvent('click', {
+      event_category: 'engagement',
+      event_label: 'read_sample_clicked'
+    });
+
     window.open('https://heyzine.com/flip-book/f0402da946.html', '_blank');
   };
 
+  // 🛒 Order
   const handleOrderClick = () => {
-    // Track Order Book button click
-    if (window.gtag) {
-      window.gtag('event', 'purchase_intent', {
-        'event_category': 'conversion',
-        'event_label': 'order_book_clicked'
-      });
-    }
+    sendEvent('purchase_intent', {
+      event_category: 'conversion',
+      event_label: 'order_book_clicked'
+    });
+
     window.open('https://payhip.com/b/HyAft', '_blank');
   };
+
 
   return (
     <div>
